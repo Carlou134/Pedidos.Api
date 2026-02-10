@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Pedidos.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace Pedidos.Application.DTOs.Requests
 {
@@ -11,8 +12,8 @@ namespace Pedidos.Application.DTOs.Requests
         [Required]
         public DateTime FechaPedido { get; set; }
         [Required]
-        [MaxLength(2)]
-        public byte Estado { get; set; }
+        [Range(0, 1)]
+        public Estado Estado { get; set; }
         [Required]
         public string Observaciones { get; set; } = string.Empty;
     }

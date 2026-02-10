@@ -62,6 +62,7 @@ namespace Pedidos.Infrastructure.Repositories
         {
             try
             {
+                pedido.FechaActualizacion = DateTime.Now;
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
                 return true;

@@ -1,21 +1,47 @@
+using Pedidos.Api.Middlewares;
+using Pedidos.Application.Interfaces;
+using Pedidos.Application.Mappings;
+using Pedidos.Application.Services;
+using Pedidos.Domain.Interfaces;
 using Pedidos.Infrastructure.Contexts;
+using Pedidos.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddSqlServer<PedidosContext>(
     builder.Configuration.GetConnectionString("dbPedidos")
 );
 
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<PedidoMappingProfile>();
+});
+
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<IPedidoService, PedidoService>();
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+        });
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseMiddleware<GlobalExceptionHandler>();
+
+app.UseCors("AllowFrontend");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

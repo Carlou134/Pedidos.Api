@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Pedidos.Application\Pedidos.Application.csproj" />
     <ProjectReference Include="..\Pedidos.Infrastructure\Pedidos.Infrastructure.csproj" />
   </ItemGroup>
 
